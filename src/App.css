@@ -13,3 +13,12 @@
   left: 0;
   z-index: 1;
 }
+
+.user_control_button {
+  background: none;
+  border: none;
+}
+
+.self-end {
+  margin: 0;
+}
