@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import 'tachyons';
 import * as serviceWorker from './serviceWorker';
 
+// eslint-disable-next-line react/jsx-filename-extension
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
