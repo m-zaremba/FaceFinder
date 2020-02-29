@@ -4,7 +4,7 @@ import Particles from 'react-particles-js';
 import './App.css';
 import Navigation from './components/navigation/Navigation';
 import SignIn from './components/signIn/SignIn';
-import Register from './components/register/Register';
+import SignUp from './components/signUp/SignUp';
 import Logo from './components/logo/Logo';
 import Rank from './components/rank/Rank';
 import ImageInputForm from './components/imageInputForm/ImageInputForm';
@@ -51,6 +51,22 @@ const App = () => {
   const [detectedFaceBox, setDetectedFaceBox] = useState({});
   const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  });
+
+  // useEffect(() => {
+  //   const fetchData = () =>
+  //     fetch('http://localhost:3001')
+  //       .then((response) => response.json())
+  //       .then(console.log);
+
+  //   fetchData();
+  // }, []);
 
   const calculateFaceLocation = (data) => {
     const detectedFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -93,7 +109,7 @@ const App = () => {
   if (route === 'signin') {
     signForm = <SignIn onRouteChange={onRouteChange} />;
   } else if (route === 'register') {
-    signForm = <Register onRouteChange={onRouteChange} />;
+    signForm = <SignUp onRouteChange={onRouteChange} setUser={setUser} />;
   }
 
   return (

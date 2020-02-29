@@ -1,8 +1,28 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const SignIn = ({ onRouteChange }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const submitSignIn = () => {
+    fetch('http://localhost:3001/signin', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 'logged in') {
+          onRouteChange('home');
+        }
+      });
+  };
+
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-30-l mw6 center wrapper shadow-5">
       <main className="pa4 black-80">
@@ -14,10 +34,11 @@ const SignIn = ({ onRouteChange }) => {
                 Email
               </label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
                 type="email"
                 name="email-address"
                 id="email-address"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mv3">
@@ -25,19 +46,20 @@ const SignIn = ({ onRouteChange }) => {
                 Password
               </label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="b pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
                 type="password"
                 name="password"
                 id="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </fieldset>
           <div className="">
             <input
-              className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+              className="b ph3 pv2 input-reset ba b--black-10 bg-transparent grow pointer f6 dib"
               type="submit"
               value="Sign in"
-              onClick={() => onRouteChange('home')}
+              onClick={() => submitSignIn()}
             />
           </div>
           <div className="lh-copy mt3">
