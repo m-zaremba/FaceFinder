@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const SignIn = ({ onRouteChange }) => {
+const SignIn = ({ onRouteChange, setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,8 +16,9 @@ const SignIn = ({ onRouteChange }) => {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        if (data === 'logged in') {
+      .then((user) => {
+        if (user.id) {
+          setUser(user);
           onRouteChange('home');
         }
       });
@@ -80,6 +81,7 @@ const SignIn = ({ onRouteChange }) => {
 
 SignIn.propTypes = {
   onRouteChange: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default SignIn;

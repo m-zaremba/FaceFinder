@@ -59,15 +59,6 @@ const App = () => {
     joined: '',
   });
 
-  // useEffect(() => {
-  //   const fetchData = () =>
-  //     fetch('http://localhost:3001')
-  //       .then((response) => response.json())
-  //       .then(console.log);
-
-  //   fetchData();
-  // }, []);
-
   const calculateFaceLocation = (data) => {
     const detectedFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputImage');
@@ -85,14 +76,27 @@ const App = () => {
     setDetectedFaceBox(box);
   };
 
-  const onButtonSubmit = () => {
+  const onPictureSubmit = () => {
     setImageUrl(input);
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, input)
-      .then((response) => displayDetectedFaceFrame(calculateFaceLocation(response)))
-      .catch((err) => {
-        // there was an error
-      });
+      .then((response) => {
+        if (response) {
+          fetch('http://localhost:3001/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          })
+            .then((res) => res.json())
+            .then((count) => {
+              setUser({ ...user, entries: count });
+            });
+        }
+        displayDetectedFaceFrame(calculateFaceLocation(response));
+      })
+      .catch((err) => console.log(err));
   };
 
   const onRouteChange = (routePath) => {
@@ -107,7 +111,7 @@ const App = () => {
   let signForm;
 
   if (route === 'signin') {
-    signForm = <SignIn onRouteChange={onRouteChange} />;
+    signForm = <SignIn onRouteChange={onRouteChange} setUser={setUser} />;
   } else if (route === 'register') {
     signForm = <SignUp onRouteChange={onRouteChange} setUser={setUser} />;
   }
@@ -119,8 +123,8 @@ const App = () => {
       {route === 'home' ? (
         <>
           <Logo />
-          <Rank />
-          <ImageInputForm setInput={setInput} onButtonSubmit={onButtonSubmit} />
+          <Rank name={user.name} entries={user.entries} />
+          <ImageInputForm setInput={setInput} onButtonSubmit={onPictureSubmit} />
           <FaceRecognition imageUrl={imageUrl} detectedFace={detectedFaceBox} />
         </>
       ) : (
