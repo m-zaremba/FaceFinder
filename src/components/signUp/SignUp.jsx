@@ -18,7 +18,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
       }),
     }).then((response) =>
       response.json().then((user) => {
-        if (user) {
+        if (user.id) {
           setUser(user);
           onRouteChange('home');
         }
