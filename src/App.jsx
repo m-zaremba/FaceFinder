@@ -92,11 +92,27 @@ const App = () => {
             .then((res) => res.json())
             .then((count) => {
               setUser({ ...user, entries: count });
-            });
+            })
+            .catch((err) => console.log(err));
         }
         displayDetectedFaceFrame(calculateFaceLocation(response));
       })
       .catch((err) => console.log(err));
+  };
+
+  const clearState = () => {
+    setInput('');
+    setImageUrl('');
+    setDetectedFaceBox({});
+    setRoute('signin');
+    setIsSignedIn(false);
+    setUser({
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: '',
+    });
   };
 
   const onRouteChange = (routePath) => {
@@ -119,7 +135,7 @@ const App = () => {
   return (
     <div className="App">
       <Particles params={particleOptions} className="particle" />
-      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} clearState={clearState} />
       {route === 'home' ? (
         <>
           <Logo />

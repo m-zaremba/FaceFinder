@@ -12,7 +12,7 @@ const Rank = ({ name, entries }) => {
 
 Rank.propTypes = {
   name: PropTypes.string.isRequired,
-  entries: PropTypes.number.isRequired,
+  entries: PropTypes.string.isRequired,
 };
 
 export default Rank;
