@@ -8,7 +8,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
   const [password, setPassword] = useState('');
 
   const submitSignUp = () => {
-    fetch('http://localhost:3001/signup', {
+    fetch('https://radiant-retreat-49082.herokuapp.com/signup', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -71,7 +71,7 @@ const App = () => {
 
   const onPictureSubmit = () => {
     setImageUrl(input);
-    fetch('http://localhost:3001/imageUrl', {
+    fetch('https://radiant-retreat-49082.herokuapp.com/imageUrl', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -81,7 +81,7 @@ const App = () => {
       .then((res) => res.json())
       .then((response) => {
         if (response) {
-          fetch('http://localhost:3001/image', {
+          fetch('https://radiant-retreat-49082.herokuapp.com:3001/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
