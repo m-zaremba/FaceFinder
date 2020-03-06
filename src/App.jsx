@@ -81,7 +81,7 @@ const App = () => {
       .then((res) => res.json())
       .then((response) => {
         if (response) {
-          fetch('https://radiant-retreat-49082.herokuapp.com:3001/image', {
+          fetch('https://radiant-retreat-49082.herokuapp.com/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
