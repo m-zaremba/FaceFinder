@@ -27,3 +27,7 @@ button {
   z-index: 1;
   width: fit-content;
 }
+
+.transparent-bg {
+  background-color: rgba(0, 0, 0, 0.6);
+}

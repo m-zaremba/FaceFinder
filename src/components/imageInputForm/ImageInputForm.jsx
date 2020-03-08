@@ -9,12 +9,12 @@ const ImageInputForm = ({ setInput, onButtonSubmit }) => {
       <div className="form center pa4 br3 shadow-5">
         <input
           type="text"
-          className="f4 pa2 w-70 center"
+          className="f4 pa2 w-70 center br-left"
           onChange={(event) => setInput(event.target.value)}
         />
         <button
           type="button"
-          className="w30 grow f4 link ph3 pv2 dib white bg-light-purple"
+          className="w30 grow f4 link ph3 pv2 dib white bg-light-purple br-right"
           onClick={() => onButtonSubmit()}
         >
           Detect

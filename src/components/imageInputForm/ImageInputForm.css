@@ -17,3 +17,15 @@
   background-size: 40px 70px;
   background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px; */
 }
+
+.br-left {
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  border: 0;
+}
+
+.br-right {
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  border: 0;
+}
