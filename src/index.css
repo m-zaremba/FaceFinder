@@ -28,6 +28,6 @@ button {
   width: fit-content;
 }
 
-.transparent-bg {
+.backshadow {
   background-color: rgba(0, 0, 0, 0.6);
 }

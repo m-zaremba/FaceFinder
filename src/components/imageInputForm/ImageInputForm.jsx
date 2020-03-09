@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const ImageInputForm = ({ setInput, onButtonSubmit }) => {
   return (
     <div className="wrapper self-center">
-      <p className="f3">Show me your picture and I will find your face.</p>
+      <p className="f3 pa2">Let me frame you one more time...</p>
       <div className="form center pa4 br3 shadow-5">
         <input
           type="text"

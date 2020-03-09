@@ -31,7 +31,7 @@ const SignIn = ({ onRouteChange, setUser }) => {
   return (
     <>
       {isSigningIn && <Loader isLoading={isSigningIn} />}
-      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-30-l mw6 center wrapper shadow-5">
+      <article className="br3 ba b--black-10 mv4 w-90 w-50-m w-30-l mw6 center wrapper shadow-5">
         <main className="pa4 black-80">
           <div className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
