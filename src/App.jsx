@@ -6,6 +6,7 @@ import SignIn from './components/signIn/SignIn';
 import SignUp from './components/signUp/SignUp';
 import Logo from './components/logo/Logo';
 import Rank from './components/rank/Rank';
+import NoteBar from './components/notification/NoteBar';
 import ImageInputForm from './components/imageInputForm/ImageInputForm';
 import FaceRecognition from './components/faceRecognition/FaceRecognition';
 
@@ -44,6 +45,7 @@ const App = () => {
   const [detectedFaceBox, setDetectedFaceBox] = useState({});
   const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [showNotification, setShowNotification] = useState(true);
   const [user, setUser] = useState({
     id: '',
     name: '',
@@ -133,18 +135,23 @@ const App = () => {
 
   return (
     <div className="App">
-      <Particles params={particleOptions} className="particle" />
-      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} clearState={clearState} />
-      {route === 'home' ? (
-        <>
-          <Logo />
-          <Rank name={user.name} entries={user.entries} />
-          <ImageInputForm setInput={setInput} onButtonSubmit={onPictureSubmit} />
-          <FaceRecognition imageUrl={imageUrl} detectedFace={detectedFaceBox} />
-        </>
-      ) : (
-        signForm
+      {showNotification && route === 'signin' && (
+        <NoteBar setShowNotification={setShowNotification} />
       )}
+      <div className="app-wrapper">
+        <Particles params={particleOptions} className="particle" />
+        <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} clearState={clearState} />
+        {route === 'home' ? (
+          <>
+            <Logo />
+            <Rank name={user.name} entries={user.entries} />
+            <ImageInputForm setInput={setInput} onButtonSubmit={onPictureSubmit} />
+            <FaceRecognition imageUrl={imageUrl} detectedFace={detectedFaceBox} />
+          </>
+        ) : (
+          signForm
+        )}
+      </div>
     </div>
   );
 };

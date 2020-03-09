@@ -1,8 +1,11 @@
 .App {
   text-align: center;
+}
+
+.app-wrapper {
+  max-width: 1020px;
   display: flex;
   flex-direction: column;
-  max-width: 1020px;
 }
 
 .particle {
