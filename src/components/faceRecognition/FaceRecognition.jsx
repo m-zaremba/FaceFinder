@@ -3,6 +3,22 @@ import PropTypes from 'prop-types';
 import './FaceRecognition.css';
 
 const FaceRecognition = ({ imageUrl, detectedFace }) => {
+  const faceBox = detectedFace.map((face) => {
+    return (
+      <div
+        className="bounding-box"
+        key={face.rightCol + face.topRow}
+        style={{
+          top: face.topRow,
+          right: face.rightCol,
+          bottom: face.bottomRow,
+          left: face.leftCol,
+        }}
+      >
+        {' '}
+      </div>
+    );
+  });
   return (
     <div className="center wrapper ma2">
       {imageUrl ? (
@@ -14,17 +30,7 @@ const FaceRecognition = ({ imageUrl, detectedFace }) => {
             width="500"
             height="auto"
           />
-          <div
-            className="bounding-box"
-            style={{
-              top: detectedFace.topRow,
-              right: detectedFace.rightCol,
-              bottom: detectedFace.bottomRow,
-              left: detectedFace.leftCol,
-            }}
-          >
-            {' '}
-          </div>
+          {faceBox}
         </>
       ) : null}
     </div>
@@ -33,7 +39,7 @@ const FaceRecognition = ({ imageUrl, detectedFace }) => {
 
 FaceRecognition.propTypes = {
   imageUrl: PropTypes.string.isRequired,
-  detectedFace: PropTypes.objectOf(PropTypes.number).isRequired,
+  detectedFace: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default FaceRecognition;

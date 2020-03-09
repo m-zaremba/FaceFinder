@@ -13,27 +13,31 @@ import FaceRecognition from './components/faceRecognition/FaceRecognition';
 const particleOptions = {
   particles: {
     number: {
-      value: 220,
+      value: 80,
     },
     size: {
-      value: 2,
+      value: 1,
     },
   },
   interactivity: {
     events: {
       onhover: {
         enable: true,
-        mode: 'repulse',
+        mode: 'grab',
       },
       onclick: {
         enable: true,
         mode: 'push',
       },
     },
+    resize: true,
     modes: {
-      repulse: {
-        distance: 150,
-        duration: 0.4,
+      grab: {
+        distance: 350,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        line_linked: {
+          opacity: 1,
+        },
       },
     },
   },
@@ -42,7 +46,7 @@ const particleOptions = {
 const App = () => {
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [detectedFaceBox, setDetectedFaceBox] = useState({});
+  const [detectedFaceBox, setDetectedFaceBox] = useState([]);
   const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
@@ -55,16 +59,22 @@ const App = () => {
   });
 
   const calculateFaceLocation = (data) => {
-    const detectedFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputImage');
     const imageWidth = Number(image.width);
     const imageHeight = Number(image.height);
-    return {
-      leftCol: detectedFace.left_col * imageWidth,
-      topRow: detectedFace.top_row * imageHeight,
-      rightCol: imageWidth - detectedFace.right_col * imageWidth,
-      bottomRow: imageHeight - detectedFace.bottom_row * imageHeight,
-    };
+    const detectedFaces = data.outputs[0].data.regions.map((region) => {
+      return region.region_info.bounding_box;
+    });
+    const faceDimensions = detectedFaces.map((face) => {
+      return {
+        leftCol: face.left_col * imageWidth,
+        topRow: face.top_row * imageHeight,
+        rightCol: imageWidth - face.right_col * imageWidth,
+        bottomRow: imageHeight - face.bottom_row * imageHeight,
+      };
+    });
+
+    return faceDimensions;
   };
 
   const displayDetectedFaceFrame = (box) => {
