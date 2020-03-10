@@ -34,10 +34,6 @@ const particleOptions = {
     modes: {
       grab: {
         distance: 350,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        line_linked: {
-          opacity: 1,
-        },
       },
     },
   },

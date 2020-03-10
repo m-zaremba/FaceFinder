@@ -7,31 +7,36 @@ const SignIn = ({ onRouteChange, setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [loginFormError, setLoginFormError] = useState('');
 
   const submitSignIn = () => {
-    setIsSigningIn(true);
-    fetch('https://radiant-retreat-49082.herokuapp.com/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((user) => {
-        if (user.id) {
-          setIsSigningIn(false);
-          setUser(user);
-          onRouteChange('home');
-        }
-      });
+    if (!email || !password) {
+      setLoginFormError('Wrong email or password');
+    } else {
+      setIsSigningIn(true);
+      fetch('https://radiant-retreat-49082.herokuapp.com/signin', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((user) => {
+          if (user.id) {
+            setIsSigningIn(false);
+            setUser(user);
+            onRouteChange('home');
+          }
+        });
+    }
   };
 
   return (
     <>
       {isSigningIn && <Loader isLoading={isSigningIn} />}
-      <article className="br3 ba b--black-10 mv4 w-90 w-50-m w-30-l mw6 center wrapper shadow-5">
+      <article className="br3 ba b--black-10 mv4 w-90 w-50-m w-30-l mw6 center wrapper shadow-5 background-mist">
         <main className="pa4 black-80">
           <div className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -61,7 +66,12 @@ const SignIn = ({ onRouteChange, setUser }) => {
                 />
               </div>
             </fieldset>
-            <div className="">
+            {loginFormError && (
+              <div className="pa2 dark-red">
+                <p>{loginFormError}</p>
+              </div>
+            )}
+            <div>
               <input
                 className="b ph3 pv2 input-reset ba b--black-10 bg-transparent grow pointer f6 dib"
                 type="submit"
