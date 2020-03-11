@@ -14,13 +14,13 @@ const SignUp = ({ onRouteChange, setUser }) => {
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [signupErrorMessage, setSignupErrorMessage] = useState('');
 
   const isEmailCorrect = () => {
     if (!validEmailRegex.test(email)) {
       setEmailError('Wrong email format');
       return false;
     }
-
     return true;
   };
 
@@ -74,15 +74,20 @@ const SignUp = ({ onRouteChange, setUser }) => {
           email,
           password,
         }),
-      }).then((response) =>
-        response.json().then((user) => {
-          if (user.id) {
-            setIsSigningUp(false);
-            setUser(user);
-            onRouteChange('home');
-          }
-        }),
-      );
+      }).then((response) => {
+        if (!response.ok) {
+          setIsSigningUp(false);
+          setSignupErrorMessage(`An account with email ${email} already exists.`);
+        } else {
+          response.json().then((user) => {
+            if (user.id) {
+              setIsSigningUp(false);
+              setUser(user);
+              onRouteChange('home');
+            }
+          });
+        }
+      });
     } else {
       clearSignupErrors();
     }
@@ -101,7 +106,9 @@ const SignUp = ({ onRouteChange, setUser }) => {
                   Name
                 </label>
                 <input
-                  className="pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className={`pa2 input-reset ba ${
+                    nameError ? 'b--dark-red' : 'b--black-40'
+                  } bg-transparent hover-bg-black-10 hover-white w-100`}
                   type="text"
                   name="name"
                   id="name"
@@ -114,7 +121,9 @@ const SignUp = ({ onRouteChange, setUser }) => {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className={`pa2 input-reset ba ${
+                    signupErrorMessage || emailError ? 'b--dark-red' : 'b--black-40'
+                  } bg-transparent hover-bg-black-10 hover-white w-100`}
                   type="email"
                   name="email-address"
                   id="email-address"
@@ -127,7 +136,9 @@ const SignUp = ({ onRouteChange, setUser }) => {
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className={`b pa2 input-reset ba ${
+                    passwordError ? 'b--dark-red' : 'b--black-40'
+                  } bg-transparent hover-bg-black-10 hover-white w-100`}
                   type="password"
                   name="password"
                   id="password"
@@ -136,6 +147,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
                 {passwordError.length > 0 && <p className="dark-red">{passwordError}</p>}
               </div>
             </fieldset>
+            {signupErrorMessage && <p className="pa3 dark-red">{signupErrorMessage}</p>}
             <div className="">
               <input
                 className="b ph3 pv2 input-reset ba b--black-10 bg-transparent grow pointer f6 dib"
