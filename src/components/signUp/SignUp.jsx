@@ -62,7 +62,6 @@ const SignUp = ({ onRouteChange, setUser }) => {
       setPasswordError('');
     }
   };
-
   const submitSignUp = () => {
     if (isFormCorrect()) {
       setIsSigningUp(true);
@@ -88,9 +87,8 @@ const SignUp = ({ onRouteChange, setUser }) => {
           });
         }
       });
-    } else {
-      clearSignupErrors();
     }
+    clearSignupErrors();
   };
 
   return (
@@ -150,7 +148,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
             {signupErrorMessage && <p className="pa3 dark-red">{signupErrorMessage}</p>}
             <div className="">
               <input
-                className="b ph3 pv2 input-reset ba b--black-10 bg-transparent grow pointer f6 dib"
+                className="b ph3 pv2 input-reset ba b--black-40 bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Sign up"
                 onClick={() => submitSignUp()}

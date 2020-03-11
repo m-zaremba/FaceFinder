@@ -46,7 +46,7 @@ const SignIn = ({ onRouteChange, setUser }) => {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className="pa2 input-reset ba b--black-40 bg-transparent hover-bg-black-10 hover-white w-100"
                   type="email"
                   name="email-address"
                   id="email-address"
@@ -58,7 +58,7 @@ const SignIn = ({ onRouteChange, setUser }) => {
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba b--black-10 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className="b pa2 input-reset ba b--black-40 bg-transparent hover-bg-black-10 hover-white w-100"
                   type="password"
                   name="password"
                   id="password"
@@ -73,7 +73,7 @@ const SignIn = ({ onRouteChange, setUser }) => {
             )}
             <div>
               <input
-                className="b ph3 pv2 input-reset ba b--black-10 bg-transparent grow pointer f6 dib"
+                className="b ph3 pv2 input-reset ba b--black-40 bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Sign in"
                 onClick={() => submitSignIn()}
