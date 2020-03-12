@@ -2,17 +2,37 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Loader from '../loader/Loader';
+import { isEmailCorrect, isPasswordCorrect } from '../../helpers/helpers';
 
 const SignIn = ({ onRouteChange, setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [loginFormError, setLoginFormError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [signinErrorMessage, setSigninErrorMessage] = useState('');
+
+  const clearSigninErrors = () => {
+    if (email !== '' && isEmailCorrect(email, setEmailError)) {
+      setEmailError('');
+    }
+    if (password !== '') {
+      setPasswordError('');
+    }
+  };
+
+  const isSigninFormCorrect = () => {
+    const emailCorrect = isEmailCorrect(email, setEmailError);
+    const passwordCorrect = isPasswordCorrect(password, setPasswordError);
+
+    if (emailCorrect && passwordCorrect) {
+      return true;
+    }
+    return false;
+  };
 
   const submitSignIn = () => {
-    if (!email || !password) {
-      setLoginFormError('Wrong email or password');
-    } else {
+    if (isSigninFormCorrect()) {
       setIsSigningIn(true);
       fetch('https://radiant-retreat-49082.herokuapp.com/signin', {
         method: 'post',
@@ -23,14 +43,25 @@ const SignIn = ({ onRouteChange, setUser }) => {
         }),
       })
         .then((response) => response.json())
-        .then((user) => {
-          if (user.id) {
+        .then((response) => {
+          if (response === 'Wrong password') {
             setIsSigningIn(false);
-            setUser(user);
-            onRouteChange('home');
+            setSigninErrorMessage(response);
+          } else if (response === 'User not found') {
+            setIsSigningIn(false);
+            setSigninErrorMessage(response);
+          } else {
+            const user = response;
+            if (user.id) {
+              setIsSigningIn(false);
+              setUser(user);
+              onRouteChange('home');
+            }
           }
         });
     }
+    clearSigninErrors();
+    setSigninErrorMessage('');
   };
 
   return (
@@ -46,31 +77,33 @@ const SignIn = ({ onRouteChange, setUser }) => {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba b--black-40 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className={`pa2 input-reset ba ${
+                    emailError ? 'b--dark-red' : 'b--black-40'
+                  } bg-transparent hover-bg-black-10 hover-white w-100`}
                   type="email"
                   name="email-address"
                   id="email-address"
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {emailError && <p className="dark-red">{emailError}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba b--black-40 bg-transparent hover-bg-black-10 hover-white w-100"
+                  className={`pa2 input-reset ba ${
+                    passwordError ? 'b--dark-red' : 'b--black-40'
+                  } bg-transparent hover-bg-black-10 hover-white w-100`}
                   type="password"
                   name="password"
                   id="password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                {passwordError && <p className="dark-red">{passwordError}</p>}
               </div>
+              {signinErrorMessage && <p className="dark-red pa3 fw9">{signinErrorMessage}</p>}
             </fieldset>
-            {loginFormError && (
-              <div className="pa2 dark-red">
-                <p>{loginFormError}</p>
-              </div>
-            )}
             <div>
               <input
                 className="b ph3 pv2 input-reset ba b--black-40 bg-transparent grow pointer f6 dib"

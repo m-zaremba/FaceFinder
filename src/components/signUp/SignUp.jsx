@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Loader from '../loader/Loader';
-
-const validEmailRegex = RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+import { isPasswordCorrect, isEmailCorrect, isNameCorrect } from '../../helpers/helpers';
 
 const SignUp = ({ onRouteChange, setUser }) => {
   const [name, setName] = useState('');
@@ -16,54 +15,31 @@ const SignUp = ({ onRouteChange, setUser }) => {
   const [passwordError, setPasswordError] = useState('');
   const [signupErrorMessage, setSignupErrorMessage] = useState('');
 
-  const isEmailCorrect = () => {
-    if (!validEmailRegex.test(email)) {
-      setEmailError('Wrong email format');
-      return false;
-    }
-    return true;
-  };
-
-  const isNameCorrect = () => {
-    if (name === '') {
-      setNameError('Name must be longer than 1 character');
-      return false;
-    }
-    return true;
-  };
-
-  const isPasswordCorrect = () => {
-    if (password === '') {
-      setPasswordError('Password cannot be empty');
-      return false;
-    }
-    return true;
-  };
-
-  const isFormCorrect = () => {
-    isEmailCorrect();
-    isNameCorrect();
-    isPasswordCorrect();
-
-    if (isEmailCorrect() && isNameCorrect() && isPasswordCorrect()) {
-      return true;
-    }
-    return false;
-  };
-
   const clearSignupErrors = () => {
-    if (email !== '' && validEmailRegex.test(email)) {
+    if (email !== '' && isEmailCorrect(email, setEmailError)) {
       setEmailError('');
     }
-    if (name !== '') {
+    if (name !== '' && isNameCorrect(name, setNameError)) {
       setNameError('');
     }
     if (password !== '') {
       setPasswordError('');
     }
   };
+
+  const isSignupFormCorrect = () => {
+    const nameCorrect = isNameCorrect(name, setNameError);
+    const emailCorrect = isEmailCorrect(email, setEmailError);
+    const passwordCorrect = isPasswordCorrect(password, setPasswordError);
+
+    if (emailCorrect && passwordCorrect && nameCorrect) {
+      return true;
+    }
+    return false;
+  };
+
   const submitSignUp = () => {
-    if (isFormCorrect()) {
+    if (isSignupFormCorrect()) {
       setIsSigningUp(true);
       fetch('https://radiant-retreat-49082.herokuapp.com/signup', {
         method: 'post',
@@ -89,6 +65,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
       });
     }
     clearSignupErrors();
+    setSignupErrorMessage('');
   };
 
   return (
@@ -145,7 +122,7 @@ const SignUp = ({ onRouteChange, setUser }) => {
                 {passwordError.length > 0 && <p className="dark-red">{passwordError}</p>}
               </div>
             </fieldset>
-            {signupErrorMessage && <p className="pa3 dark-red">{signupErrorMessage}</p>}
+            {signupErrorMessage && <p className="pa3 dark-red fw9">{signupErrorMessage}</p>}
             <div className="">
               <input
                 className="b ph3 pv2 input-reset ba b--black-40 bg-transparent grow pointer f6 dib"
