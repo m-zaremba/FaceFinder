@@ -19,6 +19,7 @@ const FaceRecognition = ({ imageUrl, detectedFace }) => {
       </div>
     );
   });
+
   return (
     <div className="center wrapper ma2">
       {imageUrl ? (

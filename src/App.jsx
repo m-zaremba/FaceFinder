@@ -61,6 +61,7 @@ const App = () => {
     const detectedFaces = data.outputs[0].data.regions.map((region) => {
       return region.region_info.bounding_box;
     });
+
     const faceDimensions = detectedFaces.map((face) => {
       return {
         leftCol: face.left_col * imageWidth,
@@ -110,7 +111,7 @@ const App = () => {
   const clearState = () => {
     setInput('');
     setImageUrl('');
-    setDetectedFaceBox({});
+    setDetectedFaceBox([]);
     setRoute('signin');
     setIsSignedIn(false);
     setUser({
