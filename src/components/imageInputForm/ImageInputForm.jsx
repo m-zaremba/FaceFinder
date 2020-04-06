@@ -11,6 +11,7 @@ const ImageInputForm = ({ setInput, onButtonSubmit }) => {
           type="text"
           className="f4 pa2 w-70 center br-left"
           onChange={(event) => setInput(event.target.value)}
+          placeholder="paste image url here"
         />
         <button
           type="button"
